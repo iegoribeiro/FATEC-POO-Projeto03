@@ -1,0 +1,55 @@
+<%-- any content can be specified here e.g.: --%>
+<%@page import="db.User"%>
+<%@page import="web.DbListener"%>
+<%@ page pageEncoding="UTF-8" %>
+<%
+    String loginError = null;
+    if(request.getParameter("session.login")!=null){
+        String login = request.getParameter("user.login");
+        String password = request.getParameter("user.password");
+        try{
+            User user = User.getUser(login, password);
+            if(user==null){
+                loginError = "Login or password incorrect";
+            }else{
+                session.setAttribute("user.login", login);
+                session.setAttribute("user.name", user.getName());
+                session.setAttribute("user.role", user.getRole());
+                response.sendRedirect(request.getRequestURI());
+            }
+        }catch(Exception ex){
+            loginError = "Error: " + ex.getMessage();
+        }
+    }else if(request.getParameter("session.logoff")!=null){
+        session.removeAttribute("user.login");
+        session.removeAttribute("user.name");
+        session.removeAttribute("user.role");
+        response.sendRedirect(request.getRequestURI());
+    }
+%>
+
+<h1>QUIZ</h1>
+<%if(session.getAttribute("user.login")==null){%>
+    <form method="post">
+        Usuário: <input type="text" name="user.login"/>
+        Password: <input type="password" name="user.password"/>
+        <input type="submit" value="LogIn" name="session.login"/>
+    </form>
+    <%if(loginError != null){%>
+    <div style="color:red"><%= loginError %></div>
+    <%}%>
+<%}else{%>
+    <form>
+        <a href="<%=request.getContextPath()%>/index.jsp">INÍCIO</a>
+        <%if(session.getAttribute("user.role").equals("ADMIN")){%>
+            | <a href="<%=request.getContextPath()%>/restricted/users.jsp">USUÁRIOS</a>
+        <%}%>
+        || Bem vindo, <b><a href="<%=request.getContextPath()%>/me.jsp"><%= session.getAttribute("user.name") %></a></b>
+        <input type="submit" value="LogOff" name="session.logoff"/>
+    </form>
+<%}%>
+
+<%if(DbListener.exceptionMessage != null){%>
+<div style="color:red"><%= DbListener.exceptionMessage %></div>
+<%}%>
+<hr/>
