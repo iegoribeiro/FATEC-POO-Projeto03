@@ -1,7 +1,7 @@
 <%-- any content can be specified here e.g.: --%>
 <%@page import="db.User"%>
 <%@page import="web.DbListener"%>
-<%@ page pageEncoding="UTF-8" %>
+<%@page pageEncoding="UTF-8"%>
 <%
     String loginError = null;
     if(request.getParameter("session.login")!=null){
@@ -28,7 +28,7 @@
     }
 %>
 
-<h1>QUIZ</h1>
+
 <%if(session.getAttribute("user.login")==null){%>
     <form method="post">
         Usuário: <input type="text" name="user.login"/>

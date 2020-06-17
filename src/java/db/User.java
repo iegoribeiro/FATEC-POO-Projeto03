@@ -24,11 +24,11 @@ public class User {
         ResultSet rs = stmt.executeQuery("SELECT * from users");
         while(rs.next()){
             list.add(
-                    new User(
-                            rs.getString("login"), 
-                            rs.getString("name"), 
-                            rs.getString("role")
-                    )
+                new User(
+                    rs.getString("login"), 
+                    rs.getString("name"), 
+                    rs.getString("role")
+                )
             );
         }
         rs.close();
@@ -48,9 +48,9 @@ public class User {
         ResultSet rs = stmt.executeQuery();
         if(rs.next()){
             user = new User(
-                    rs.getString("login"), 
-                    rs.getString("name"),
-                    rs.getString("role")
+                rs.getString("login"), 
+                rs.getString("name"),
+                rs.getString("role")
             );
         }
         rs.close();
