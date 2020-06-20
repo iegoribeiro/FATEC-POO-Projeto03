@@ -19,6 +19,10 @@ public class DbListener implements ServletContextListener {
             Class.forName("org.sqlite.JDBC");
             Connection con = DriverManager.getConnection(URL);
             Statement stmt = con.createStatement();
+            
+            step = "alter default setting for foreign key";
+            stmt.executeUpdate("PRAGMA foreign_keys = ON");
+            
             step = "'users' table creation";
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users("
                     + "name VARCHAR(200) NOT NULL,"
@@ -26,25 +30,64 @@ public class DbListener implements ServletContextListener {
                     + "password_hash LONG NOT NULL,"
                     + "role VARCHAR(20) NOT NULL"
                     + ")");
-                        
+                                    
             if(User.getList().isEmpty()){
                 step = "Default user creation";
                 stmt.executeUpdate("INSERT INTO users VALUES ("
                     + "'Administrador', 'admin', "+"123456".hashCode()+",'ADMIN')");
-                step = "Default user creation";
                 stmt.executeUpdate("INSERT INTO users VALUES ("
                     + "'Fulano da Silva', 'fulano', "+"1234".hashCode()+",'USER')");
-                step = "Default user creation";
                 stmt.executeUpdate("INSERT INTO users VALUES ("
                     + "'Beltrano Souza', 'beltrano', "+"123".hashCode()+",'USER')");
             }
-            step = "'categories' table creation";
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS categories("
-                    + "name VARCHAR(20) PRIMARY KEY,"
-                    + "description VARCHAR(200) "
+            
+            step = "'category_enum' table creation";
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS category_enum("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + "name VARCHAR(100) NOT NULL"
                     + ")");
+            
+            if(1 == 2){
+//            if(CategoryEnum.getList().isEmpty()){
+                step = "Default Category Enum creation";
+                stmt.executeUpdate("INSERT INTO category_enum VALUES (NULL, 'Esporte')");
+                stmt.executeUpdate("INSERT INTO category_enum VALUES (NULL, 'Exatas')");
+            }
+            
+            step = "'questions' table creation";
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS questions("
+                    + "question VARCHAR(255) NOT NULL,"
+                    + "answer1 VARCHAR(255) NOT NULL,"
+                    + "answer2 VARCHAR(255) NOT NULL,"
+                    + "answer3 VARCHAR(255),"
+                    + "fk_category_enum INTEGER NOT NULL,"
+                    + "CONSTRAINT fk_category_enum FOREIGN KEY (fk_category_enum) REFERENCES category_enum(id)"
+                    + ")");
+                    
+            if(1 == 2){
+//            if(Question.getList().isEmpty()){
+                step = "Default questions creation";
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Quanto é 1+1?', '1', 'dois', '3', 2)");
+            }
+            
+            step = "'results' table creation";
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS results("
+                    + "result INTEGER NOT NULL,"
+                    + "fk_user_login VARCHAR(20) NOT NULL,"
+                    + "fk_category_enum INTEGER,"
+                    + "FOREIGN KEY (fk_user_login) REFERENCES users(login),"
+                    + "FOREIGN KEY (fk_category_enum) REFERENCES category_enum(id),"
+                    + "CHECK (result >= 0 AND result <= 100)"
+                    + ")");
+            
+            if(1 == 2){
+//           if(Result.getList().isEmpty()){
+                step = "Default results creation";
+                stmt.executeUpdate("INSERT INTO results VALUES ('70', 'admin', 2)");
+                stmt.executeUpdate("INSERT INTO results VALUES ('30', 'fulano', 1)");
+                stmt.executeUpdate("INSERT INTO results VALUES ('30', 'beltrano', NULL)");
+            }
            
-                        
             stmt.close();
             con.close();
         } catch (Exception ex) {
