@@ -1,5 +1,8 @@
 package web;
 
+import db.CategoryEnum;
+import db.Question;
+import db.Result;
 import db.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,8 +50,7 @@ public class DbListener implements ServletContextListener {
                     + "name VARCHAR(100) NOT NULL"
                     + ")");
             
-            if(1 == 2){
-//            if(CategoryEnum.getList().isEmpty()){
+            if(CategoryEnum.getList().isEmpty()){
                 step = "Default Category Enum creation";
                 stmt.executeUpdate("INSERT INTO category_enum VALUES (NULL, 'Esporte')");
                 stmt.executeUpdate("INSERT INTO category_enum VALUES (NULL, 'Exatas')");
@@ -63,9 +65,8 @@ public class DbListener implements ServletContextListener {
                     + "fk_category_enum INTEGER NOT NULL,"
                     + "CONSTRAINT fk_category_enum FOREIGN KEY (fk_category_enum) REFERENCES category_enum(id)"
                     + ")");
-                    
-            if(1 == 2){
-//            if(Question.getList().isEmpty()){
+            
+            if(Question.getList().isEmpty()){
                 step = "Default questions creation";
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Quanto é 1+1?', '1', 'dois', '3', 2)");
             }
@@ -80,8 +81,7 @@ public class DbListener implements ServletContextListener {
                     + "CHECK (result >= 0 AND result <= 100)"
                     + ")");
             
-            if(1 == 2){
-//           if(Result.getList().isEmpty()){
+           if(Result.getList().isEmpty()){
                 step = "Default results creation";
                 stmt.executeUpdate("INSERT INTO results VALUES ('70', 'admin', 2)");
                 stmt.executeUpdate("INSERT INTO results VALUES ('30', 'fulano', 1)");
