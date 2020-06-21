@@ -33,12 +33,13 @@
         requestException = ex;
     }
     
-    Int i = 0;
-    Int total = 0;
+    Integer i = 0;
+    long total = 0;
     for(Result r2: list2){
         i = i + 1;
-        total = r2.getResult();
+        total = total + r2.getResult();
     }
+    long media = total/i;
 %>
 <html>
     <head>
@@ -98,6 +99,7 @@
                 </tr>
                 <%}%>
             </table>
+            Sua média de acertos é <%= media %>
         <%}%>
     </body>
 </html>
