@@ -43,27 +43,54 @@ public class Result {
         con.close();
         return list;
     }
-    public static Result getResult(long rowId)throws Exception{
-        Result result = null;
+    
+    public static ArrayList<Result> getLast()throws Exception{
+        ArrayList<Result> list3 = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
-        String SQL = "SELECT rowid, * from results WHERE rowid=?";
-        PreparedStatement stmt = con.prepareStatement(SQL);
-        stmt.setLong(1, rowId);
-        ResultSet rs = stmt.executeQuery();
-        if(rs.next()){
-            result = new Result(
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT ROW_NUMBER () OVER (ORDER BY results.rowid desc) rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login inner join category_enum on results.fk_category_enum = category_enum.id order by results.rowid desc LIMIT 10 ");
+        while(rs.next()){
+            list3.add(
+                    new Result(
                             rs.getLong("rowid"), 
                             rs.getLong("result"), 
                             rs.getString("fk_user_login"),
                             rs.getLong("fk_category_enum")
-                    );
+                    )
+            );
         }
         rs.close();
         stmt.close();
         con.close();
-        return result;
+        return list3;
     }
+    
+    public static ArrayList<Result> getResult(String login)throws Exception{
+        ArrayList<Result> list2 = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        String SQL = "SELECT ROW_NUMBER () OVER (ORDER BY results.result desc) rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login inner join category_enum on results.fk_category_enum = category_enum.id WHERE results.fk_user_login=? order by results.result desc LIMIT 10 ";
+        PreparedStatement stmt = con.prepareStatement(SQL);
+        stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        
+        while(rs.next()){
+            list2.add(
+                    new Result(
+                            rs.getLong("rowid"), 
+                            rs.getLong("result"), 
+                            rs.getString("fk_user_login"),
+                            rs.getLong("fk_category_enum")
+                    )
+            );
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return list2;
+    }
+    
     public static void addResult(Long result, String fk_user_login, Long fk_category_enum) throws Exception{
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);

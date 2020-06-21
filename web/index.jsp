@@ -18,6 +18,27 @@
     }catch(Exception ex){
         requestException = ex;
     }
+            
+    ArrayList<Result> list2 = new ArrayList<>();
+    try{
+        list2 = Result.getResult("beltrano");
+    }catch(Exception ex){
+        requestException = ex;
+    }
+    
+    ArrayList<Result> list3 = new ArrayList<>();
+    try{
+        list3 = Result.getLast();
+    }catch(Exception ex){
+        requestException = ex;
+    }
+    
+    Int i = 0;
+    Int total = 0;
+    for(Result r2: list2){
+        i = i + 1;
+        total = r2.getResult();
+    }
 %>
 <html>
     <head>
@@ -31,6 +52,20 @@
         
         <hr/>
         
+        <h1>Últimos testes realizados</h1>
+        <table border="1">
+            <tr>
+                <th>Nome</th>
+                <th>Nota</th>
+            </tr>
+            <%for(Result r3: list3){%>
+                <tr>
+                    <td><%= r3.getFk_user_login() %></td>
+                    <td><%= r3.getResult() %></td>                    
+                </tr>
+                <%}%>
+            </table>
+            
         <h1>Maiores Notas</h1>
         <table border="1">
             <tr>
@@ -55,11 +90,11 @@
                 <th>Nome</th>
                 <th>Nota</th>
             </tr>
-            <%for(Result r: list){%>
+            <%for(Result r2: list2){%>
                 <tr>
-                    <td><%= r.getRowId() %></td>
-                    <td><%= r.getFk_user_login() %></td>
-                    <td><%= r.getResult() %></td>                    
+                    <td><%= r2.getRowId() %></td>
+                    <td><%= r2.getFk_user_login() %></td>
+                    <td><%= r2.getResult() %></td>                    
                 </tr>
                 <%}%>
             </table>
