@@ -12,7 +12,7 @@ import javax.servlet.ServletContextListener;
 
 public class DbListener implements ServletContextListener {
 
-    public static final String URL = "jdbc:sqlite:C:\\Users\\iego_\\OneDrive\\ADS\\4º Semestre\\POO\\Projeto3_Quiz\\SQLite\\quiz.db";    
+    public static final String URL = "jdbc:sqlite:C:\\Users\\notebook-user\\Documents\\GitHub\\FATEC-POO-Projeto03\\SQLite\\quiz.db";    
     public static String exceptionMessage = null;
         
     @Override
