@@ -27,7 +27,7 @@ public class Result {
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT results.rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login inner join category_enum on results.fk_category_enum = category_enum.id");
+        ResultSet rs = stmt.executeQuery("SELECT ROW_NUMBER () OVER (ORDER BY results.result desc) rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login inner join category_enum on results.fk_category_enum = category_enum.id order by results.result desc LIMIT 10 ");
         while(rs.next()){
             list.add(
                     new Result(

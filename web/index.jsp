@@ -37,16 +37,32 @@
                 <th>Colocação</th>
                 <th>Nome</th>
                 <th>Nota</th>
-                <th>Categoria</th>
             </tr>
             <%for(Result r: list){%>
                 <tr>
                     <td><%= r.getRowId() %></td>
                     <td><%= r.getFk_user_login() %></td>
                     <td><%= r.getResult() %></td>                    
-                    <td><%= r.getFk_category_enum() %></td>
                 </tr>
                 <%}%>
             </table>
+            
+        <%if(session.getAttribute("user.login")!=null){%>
+        <h1>Seus melhores resultados</h1>
+        <table border="1">
+            <tr>
+                <th>Colocação</th>
+                <th>Nome</th>
+                <th>Nota</th>
+            </tr>
+            <%for(Result r: list){%>
+                <tr>
+                    <td><%= r.getRowId() %></td>
+                    <td><%= r.getFk_user_login() %></td>
+                    <td><%= r.getResult() %></td>                    
+                </tr>
+                <%}%>
+            </table>
+        <%}%>
     </body>
 </html>
