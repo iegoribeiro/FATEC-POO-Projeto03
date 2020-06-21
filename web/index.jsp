@@ -11,11 +11,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+    Exception requestException = null;
     ArrayList<Result> list = new ArrayList<>();
     try{
         list = Result.getList();
     }catch(Exception ex){
-        //requestException = ex;
+        requestException = ex;
     }
 %>
 <html>
@@ -36,14 +37,16 @@
                 <th>Colocação</th>
                 <th>Nome</th>
                 <th>Nota</th>
+                <th>Categoria</th>
             </tr>
-            <%for(Result c: list){%>
-            <tr>
-                <td><%= c.getRowId() %></td>
-                <td><%= c.getUser() %></td>
-                <td><%= c.getResult() %></td>
-            </tr>
-            <%}%>
+            <%for(Result r: list){%>
+                <tr>
+                    <td><%= r.getRowId() %></td>
+                    <td><%= r.getFk_user_login() %></td>
+                    <td><%= r.getResult() %></td>                    
+                    <td><%= r.getFk_category_enum() %></td>
+                </tr>
+                <%}%>
             </table>
     </body>
 </html>
