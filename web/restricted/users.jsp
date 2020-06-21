@@ -44,7 +44,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Usuários - FINANCY$</title>
+        <title>Usuários - QUIZ</title>
     </head>
     <body>
         <%@include file="../WEB-INF/jspf/menu.jspf" %>

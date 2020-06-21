@@ -14,24 +14,16 @@ import java.util.ArrayList;
 public class Result {
     private long rowId;
     private long result;
-    private User user;
-    private CategoryEnum category;
+    private String userLogin;
+    private long categoryEnumId;
 
-    public Result(long rowId, long result, User user, CategoryEnum category) {
+    public Result(long rowId, long result, String userLogin, long categoryEnumId) {
         this.rowId = rowId;
         this.result = result;
-        this.user = user;
-        this.category = category;
+        this.userLogin = userLogin;
+        this.categoryEnumId = categoryEnumId;
     }
-    
-    public Result(long rowId, long result, String userLogin, long categoryEnumId) throws Exception {
-        this.rowId = rowId;
-        this.result = result;
-        this.user.setLogin(userLogin);
-        this.category.setId(categoryEnumId);
-//        this.category.setName(CategoryEnum.getCategoryEnum(categoryEnumId).getName());
-    }
-    
+
     public static ArrayList<Result> getList() throws Exception{
         ArrayList<Result> list = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
@@ -144,19 +136,19 @@ public class Result {
         this.result = result;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
-    public CategoryEnum getCategory() {
-        return category;
+    public long getCategoryEnumId() {
+        return categoryEnumId;
     }
 
-    public void setCategory(CategoryEnum category) {
-        this.category = category;
+    public void setCategoryEnumId(long categoryEnumId) {
+        this.categoryEnumId = categoryEnumId;
     }
 }

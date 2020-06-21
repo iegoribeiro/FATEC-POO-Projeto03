@@ -17,27 +17,17 @@ public class Question {
     private String answer1;
     private String answer2;
     private String answer3;
-    private CategoryEnum category;
+    private long categoryEnumId;
 
-    public Question(long rowId, String question, String answer1, String answer2, String answer3, CategoryEnum category) {
+    public Question(long rowId, String question, String answer1, String answer2, String answer3, long categoryEnumId) {
         this.rowId = rowId;
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
-        this.category = category;
+        this.categoryEnumId = categoryEnumId;
     }
 
-    public Question(long rowId, String question, String answer1, String answer2, String answer3, long categoryEnumId) throws Exception {
-        this.rowId = rowId;
-        this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.category.setId(categoryEnumId);
-//        this.category.setName(CategoryEnum.getCategoryEnum(categoryEnumId).getName());
-    }
-    
     public static ArrayList<Question> getList()throws Exception{
         ArrayList<Question> list = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
@@ -164,12 +154,12 @@ public class Question {
         this.answer3 = answer3;
     }
 
-    public CategoryEnum getCategory() {
-        return category;
+    public long getCategoryEnumId() {
+        return categoryEnumId;
     }
 
-    public void setCategory(CategoryEnum category) {
-        this.category = category;
+    public void setCategoryEnumId(long categoryEnumId) {
+        this.categoryEnumId = categoryEnumId;
     }
         
 }
