@@ -8,6 +8,7 @@
 <%@page import="web.DbListener"%>
 <%@page import="db.User"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
@@ -18,10 +19,10 @@
     }catch(Exception ex){
         requestException = ex;
     }
-            
+    
     ArrayList<Result> list2 = new ArrayList<>();
     try{
-        list2 = Result.getResult("beltrano");
+        list2 = Result.getResult( (String)session.getAttribute("user.login") );
     }catch(Exception ex){
         requestException = ex;
     }
@@ -35,11 +36,17 @@
     
     Integer i = 0;
     long total = 0;
+    long media = 0;
     for(Result r2: list2){
         i = i + 1;
         total = total + r2.getResult();
     }
-    long media = total/i;
+    try{
+        media = total/i;
+    }catch(Exception ex){
+        media = 0;
+    }
+    
 %>
 <html>
     <head>
@@ -68,6 +75,7 @@
             </table>
             
         <h1>Maiores Notas</h1>
+            
         <table border="1">
             <tr>
                 <th>Colocação</th>
