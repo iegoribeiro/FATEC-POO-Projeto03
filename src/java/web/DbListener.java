@@ -25,14 +25,16 @@ public class DbListener implements ServletContextListener {
             
             step = "alter default setting for foreign key";
             stmt.executeUpdate("PRAGMA foreign_keys = ON");
-            
-            step = "'users' table creation";
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users("
-                    + "name VARCHAR(200) NOT NULL,"
-                    + "login VARCHAR(20) PRIMARY KEY,"
-                    + "password_hash LONG NOT NULL,"
-                    + "role VARCHAR(20) NOT NULL"
-                    + ")");
+                        
+            if(User.getList().isEmpty()){
+                step = "'users' table creation";
+                stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users("
+                        + "name VARCHAR(200) NOT NULL,"
+                        + "login VARCHAR(20) PRIMARY KEY,"
+                        + "password_hash LONG NOT NULL,"
+                        + "role VARCHAR(20) NOT NULL"
+                        + ")");
+            }
                                     
             if(User.getList().isEmpty()){
                 step = "Default user creation";
@@ -44,11 +46,13 @@ public class DbListener implements ServletContextListener {
                     + "'Beltrano Souza', 'beltrano', "+"123".hashCode()+",'USER')");
             }
             
-            step = "'category_enum' table creation";
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS category_enum("
+            if(CategoryEnum.getList().isEmpty()){
+                step = "'category_enum' table creation";
+                stmt.executeUpdate("CREATE TABLE IF NOT EXISTS category_enum("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "name VARCHAR(100) NOT NULL"
                     + ")");
+            }
             
             if(CategoryEnum.getList().isEmpty()){
                 step = "Default Category Enum creation";
@@ -56,15 +60,18 @@ public class DbListener implements ServletContextListener {
                 stmt.executeUpdate("INSERT INTO category_enum VALUES (NULL, 'Exatas')");
             }
             
-            step = "'questions' table creation";
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS questions("
+            if(Question.getList().isEmpty()){
+                step = "'questions' table creation";
+                stmt.executeUpdate("CREATE TABLE IF NOT EXISTS questions("
                     + "question VARCHAR(255) NOT NULL,"
                     + "answer1 VARCHAR(255) NOT NULL,"
                     + "answer2 VARCHAR(255) NOT NULL,"
                     + "answer3 VARCHAR(255),"
                     + "fk_category_enum INTEGER NOT NULL,"
                     + "CONSTRAINT fk_category_enum FOREIGN KEY (fk_category_enum) REFERENCES category_enum(id)"
-                    + ")");
+                    + ")");    
+            }
+            
             
             if(Question.getList().isEmpty()){
                 //INSERT INTO questions VALUES ('Pergunta?', 'CERTA', 'ERRADA', 'ERRADA OPCIONAL', CATEGORIA OPCIONAL);
@@ -123,7 +130,7 @@ public class DbListener implements ServletContextListener {
             stmt.close();
             con.close();
         } catch (Exception ex) {
-            exceptionMessage = step + ": " + ex.getMessage();
+            //exceptionMessage = step + ": " + ex.getMessage();
         }
     }
 
