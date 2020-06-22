@@ -2,6 +2,16 @@
 <%@page import="db.User"%>
 <%@page import="web.DbListener"%>
 <%@page pageEncoding="UTF-8"%>
+
+<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<link rel="shortcut icon" href="">
+<link href="<%= request.getContextPath() %>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%= request.getContextPath() %>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
 <%
     String loginError = null;
     if(request.getParameter("session.login")!=null){
@@ -29,27 +39,71 @@
 %>
 
 
-<%if(session.getAttribute("user.login")==null){%>
-    <form method="post">
-        Usuário: <input type="text" name="user.login"/>
-        Password: <input type="password" name="user.password"/>
-        <input type="submit" value="LogIn" name="session.login"/>
-    </form>
-    <%if(loginError != null){%>
-    <div style="color:red"><%= loginError %></div>
-    <%}%>
-<%}else{%>
-    <form>
-        <a href="<%=request.getContextPath()%>/index.jsp">INÍCIO</a>
-        <%if(session.getAttribute("user.role").equals("ADMIN")){%>
-            | <a href="<%=request.getContextPath()%>/restricted/users.jsp">USUÁRIOS</a>
-        <%}%>
-        || Bem vindo, <b><a href="<%=request.getContextPath()%>/me.jsp"><%= session.getAttribute("user.name") %></a></b>
-        <input type="submit" value="LogOff" name="session.logoff"/>
-    </form>
-<%}%>
+<!-- Navigation -->
+<header>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #5f5e5e7d" id="mainNav">
+                <a class="navbar-brand" href="<%= request.getContextPath() %>/index.jsp"><img src="<%= request.getContextPath() %>/bannerFatec.png" width=250 height=80></a>
 
-<%if(DbListener.exceptionMessage != null){%>
-<div style="color:red"><%= DbListener.exceptionMessage %></div>
-<%}%>
-<hr/>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" 
+                        aria-label="Toggle navigation">Menu<i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                      <li class="nav-item">
+                        <a class="nav-link" href="<%= request.getContextPath() %>/index.jsp">Início</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="<%= request.getContextPath() %>/restricted/users.jsp">Usuários</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="<%= request.getContextPath() %>/quiz.jsp">Quiz</a>
+                      </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+   
+    <div class="container" style="margin-top: 150px">
+        <div class="row">
+            <%if(session.getAttribute("user.login")==null){%>
+                <nav class="navbar navbar-light bg-light navbar-right">
+                  <form class="form-inline" method="post">
+                      <div class="input-group mr-2">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">@</span>
+                        </div>
+                        <input type="text" class="form-control" name="user.login" placeholder="login">
+                      </div>
+
+                      <div class="input-group mr-2">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">#</span>
+                        </div>
+                        <input type="password" class="form-control" name="user.password" placeholder="Password">
+                      </div>
+                      <button type="submit" class="btn btn-primary" value="LogIn" name="session.login">Submit</button>
+                  </form>
+                </nav>
+                <%if(loginError != null){%>
+                  <div style="color:red"><%= loginError %></div>
+                <%}%>
+            <%}else{%>
+                <form>
+                    <a href="<%=request.getContextPath()%>/index.jsp">INÍCIO</a>
+                    <%if(session.getAttribute("user.role").equals("ADMIN")){%>
+                        | <a href="<%=request.getContextPath()%>/restricted/users.jsp">USUÁRIOS</a>
+                    <%}%>
+                    || Bem vindo, <b><a href="<%=request.getContextPath()%>/me.jsp"><%= session.getAttribute("user.name") %></a></b>
+                    <input type="submit" value="LogOff" name="session.logoff"/>
+                </form>
+            <%}%>
+
+            <%if(DbListener.exceptionMessage != null){%>
+            <div style="color:red"><%= DbListener.exceptionMessage %></div>
+            <%}%>
+        </div>
+    </div>
+</header>

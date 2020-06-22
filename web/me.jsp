@@ -30,6 +30,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="<%= request.getContextPath() %>/css/clean-blog.css" rel="stylesheet">
         <title>Meu Perfil - QUIZ</title>
     </head>
     <body>

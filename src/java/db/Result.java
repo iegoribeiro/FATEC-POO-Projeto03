@@ -16,12 +16,18 @@ public class Result {
     private long result;
     private String userLogin;
     private long categoryEnumId;
+    private String username;
 
     public Result(long rowId, long result, String userLogin, long categoryEnumId) {
         this.rowId = rowId;
         this.result = result;
         this.userLogin = userLogin;
         this.categoryEnumId = categoryEnumId;
+    }
+    
+    public Result(String username, long result) {
+        this.username = username;
+        this.result = result;
     }
 
     public static ArrayList<Result> getList() throws Exception{
@@ -119,7 +125,86 @@ public class Result {
         stmt.close();
         con.close();
     }
-
+    
+    public static ArrayList<Result> getTenLastQuizzes() throws Exception{
+        ArrayList<Result> list = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT u.name as username, r.result as result "
+                                        + "FROM results r "
+                                        + "INNER JOIN users u ON (r.fk_user_login = u.login)"
+                                        + "ORDER BY r.rowId DESC LIMIT 10");
+        while(rs.next()){
+            list.add(new Result(
+              rs.getString("username"), 
+              rs.getLong("result")
+            ));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return list;
+    }
+    
+    public static ArrayList<Result> getRanking() throws Exception{
+        ArrayList<Result> list = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT u.name as username, r.result as result "
+                                        + "FROM results r "
+                                        + "INNER JOIN users u ON (r.fk_user_login = u.login)"
+                                        + "ORDER BY r.result DESC LIMIT 10");
+        while(rs.next()){
+            list.add(new Result(
+              rs.getString("username"), 
+              rs.getLong("result")
+            ));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return list;
+    }
+    
+    public static float getMediaByUser(String login) throws Exception{
+        float media = 0;
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        PreparedStatement stmt;
+        stmt = con.prepareStatement("SELECT avg(r.result) as average FROM results r INNER JOIN users u ON (r.fk_user_login = u.login) WHERE u.login = ?");
+        stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            media = rs.getFloat("average");
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return media;
+    }
+    
+    public static ArrayList<Result> getTenLastQuizzesByUser(String login) throws Exception{
+        ArrayList<Result> list = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        PreparedStatement stmt;
+        stmt = con.prepareStatement("SELECT u.name as username, r.result as result FROM results r INNER JOIN users u ON (r.fk_user_login = u.login) WHERE u.login = ? ORDER BY r.rowId DESC LIMIT 10");
+        stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+            list.add(new Result(
+              rs.getString("username"), 
+              rs.getLong("result")
+            ));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return list;
+    }
+    
     public long getRowId() {
         return rowId;
     }
@@ -150,5 +235,13 @@ public class Result {
 
     public void setCategoryEnumId(long categoryEnumId) {
         this.categoryEnumId = categoryEnumId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
