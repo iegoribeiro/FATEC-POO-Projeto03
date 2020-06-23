@@ -27,6 +27,13 @@ public class Question {
         this.answer3 = answer3;
         this.categoryEnumId = categoryEnumId;
     }
+    
+    public String getAnswer(int answer) throws Exception{
+        if (answer == 1) return this.getAnswer1();
+        if (answer == 2) return this.getAnswer2();
+        if (answer == 3) return this.getAnswer3();
+        return null;
+    }
 
     public static ArrayList<Question> getList()throws Exception{
         ArrayList<Question> list = new ArrayList<>();
@@ -112,6 +119,32 @@ public class Question {
         stmt.execute();
         stmt.close();
         con.close();
+    }
+    
+    public static ArrayList<Question> getTenQuestionsRandomByCategory(long category) throws Exception{
+        ArrayList<Question> list = new ArrayList<>();
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        String SQL = "SELECT rowId, * FROM questions WHERE (0 = ?) or (0 <> ? and fk_category_enum = ?) ORDER BY random() LIMIT 10";
+        PreparedStatement stmt = con.prepareStatement(SQL);
+        stmt.setLong(1, category);
+        stmt.setLong(2, category);
+        stmt.setLong(3, category);
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+            list.add(new Question(
+                rs.getLong("rowid"),
+                rs.getString("question"), 
+                rs.getString("answer1"),
+                rs.getString("answer2"),
+                rs.getString("answer3"),
+                rs.getLong("fk_category_enum")
+            ));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return list;
     }
 
     public long getRowId() {

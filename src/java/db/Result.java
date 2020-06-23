@@ -17,6 +17,12 @@ public class Result {
     private String userLogin;
     private long categoryEnumId;
     private String username;
+    
+    public Result(long result, String userLogin, long categoryEnumId) {
+        this.result = result;
+        this.userLogin = userLogin;
+        this.categoryEnumId = categoryEnumId;
+    }
 
     public Result(long rowId, long result, String userLogin, long categoryEnumId) {
         this.rowId = rowId;
@@ -72,20 +78,20 @@ public class Result {
         return transaction;
     }
     
-    public static void addResult(long result, User user, CategoryEnum category) throws Exception{
+    public static void addResult(long result, String user, long category) throws Exception{
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
         String SQL;
-        if (category != null) {
+        if (category != 0) {
             SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?,?)";
         } else {
             SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?)";
         }
         PreparedStatement stmt = con.prepareStatement(SQL);
         stmt.setLong(1, result);
-        stmt.setString(2, user.getLogin());
-        if (category != null) {
-            stmt.setLong(3, category.getId());
+        stmt.setString(2, user);
+        if (category != 0) {
+            stmt.setLong(3, category);
         }
         stmt.execute();
         stmt.close();

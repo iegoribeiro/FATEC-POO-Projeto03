@@ -12,7 +12,7 @@ import javax.servlet.ServletContextListener;
 
 public class DbListener implements ServletContextListener {
 
-    public static final String URL = "jdbc:sqlite:C:\\Users\\iego_\\OneDrive\\ADS\\4º Semestre\\POO\\Projeto3_Quiz\\SQLite\\quiz.db";    
+    public static final String URL = "jdbc:sqlite:E:\\Projetos\\SQLite\\quiz.db";    
     public static String exceptionMessage = null;
         
     @Override
@@ -90,11 +90,11 @@ public class DbListener implements ServletContextListener {
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o nome do americano que é considerado o maior golfista de todos os tempos?', 'Tiger Woods', 'Jack Nicklaus', 'Arnold Palmer', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Quem torce para o São Paulo é?', 'São Paulino', 'Bambi', 'Paulistano', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o maior vencedor de Grand Slam em simples da história?', 'Roger Federer', 'Rafael Nadal', 'Novak Djokovic', 1)");
-                stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o nadador americano recordista de medalhas de ouro nas Olimpíadas?', '´Michael phelps', 'Mark Spitz', 'César Cielo', 1)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o nadador americano recordista de medalhas de ouro nas Olimpíadas?', 'Michael phelps', 'Mark Spitz', 'César Cielo', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual é o elemento mais abundante na Terra?', 'Hidrogênio', 'Oxigênio', 'Hélio', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual destes países é transcontinental?', 'Rússia', 'Istambul', 'Groenlândia', 3)");
-                stmt.executeUpdate("INSERT INTO questions VALUES ('Qual é o nome da unidade de corrente elétrica?', 'Ampere', 'Ohm', 'Volt', 1)");
-                stmt.executeUpdate("INSERT INTO questions VALUES ('Qual foi o humilhante placar sofrido pelo Santos contra o corinthians em 2005?', '7x1', '8x2', NULL, 1)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Qual é o nome da unidade de corrente elétrica?', 'Ampere', 'Ohm', 'Volt', 2)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Qual foi o humilhante placar sofrido pelo Santos contra o corinthians em 2005?', '7x1', '8x2', '4x3', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o maior animal terrestre?', 'Elefante africano', 'Nhonho', 'Girafa', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o tema do famoso discurso Eu Tenho um Sonho, de Martin Luther King?', 'Igualdade das raças', 'Justiça para os menos favorecidos', 'Intolerância religiosa', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual é a fórmula mais famosa de Albert Einstein?', 'E=MC2', 'P=mg', 'F=ma', 2)");
