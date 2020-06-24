@@ -37,3 +37,28 @@
   font-weight: bold;
   text-align: center;
 }
+
+.img-relative {
+    width: 150px;
+    height: 50px;
+}
+
+.btn-submit {
+  text-align: center;
+  border: 1px solid transparent;
+  padding: 7px;
+  margin: 0px 2px 8px 2px;
+  border-radius: 0.25rem;
+}
+
+.custom-style1 {
+    margin-bottom: 15px;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+.custom-style2 {
+    padding: 9px 0px 0px 0px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+}
