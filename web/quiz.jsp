@@ -16,15 +16,12 @@
     Exception requestException = null;
     if(request.getParameter("submitQuiz")!=null){
         try{
-            long categoryEnumId = Long.parseLong(request.getParameter("categoryEnumId"));
-            long sum = 0;
-            
-            
-            
             String userLogin = (String) session.getAttribute("user.login");
+            long categoryEnumId = Long.parseLong(request.getParameter("categoriaGame"));
+            long pontos = Long.parseLong(request.getParameter("pontos"));
             
-            Result result = new Result(sum, userLogin, categoryEnumId);
-            result.addResult(sum, userLogin, categoryEnumId);
+            Result result = new Result();
+            result.addResult(pontos, userLogin, categoryEnumId);
 //            if(t==null){
 //                throw new Exception("Categoria não encontrada. Pode ter sido removida da base de dados por outro usuário.");
 //            }else{
@@ -52,9 +49,12 @@
                 </div>
             </div>
         <%}else{%>
-
+            <%if(requestException != null){%>
+                <div style="color:red"><%= requestException.getMessage() %></div>
+            <%}%>
+            <%long pontos = 0;%>
+            <%String errorMessage = "";%>
             <%if(request.getParameter("submitQuiz")==null){%>
-                
                 <form method="post">
                     <div class="container">
                         <div class="row">
@@ -75,8 +75,10 @@
                 </form>
             
                 <%if(request.getParameter("categoryEnumId")!=null){%>
+                    <%pontos = 0;%>
                     <form method="post">
                         <%int i = 1;%>
+                        <%boolean enableSubmit = true;%>
                         <%for (Question question : Question.getTenQuestionsRandomByCategory(Long.parseLong(request.getParameter("categoryEnumId")))) {%>
                             <div class="container">
                                 <div class="shadow-lg p-2 m-4 bg-light rounded">
@@ -91,27 +93,49 @@
                                     while(list.size()<3) {
                                         int n = random.nextInt(3)+1;
                                         if (!list.contains(n)) {
-                                            list.add(n);%>
-
-                                            <div class="form-group form-check ml-4 mt-2 h5">
-                                                <input class="form-check-input mt-1" style="height: 17px; width: 17px;" type="radio" name="answer<%=i%>" id="answer-<%=i%>-<%=n%>" value="<%=n%>" > 
-                                                <label class="form-check-label ml-2" for="answer-<%=i%>-<%=n%>">
-                                                    <%= question.getAnswer(n)%>
-                                                </label>
-                                            </div>
+                                            list.add(n);
+                                    %>
+                                    
+                                            <% if (!(question.getAnswer(n) == null || question.getAnswer(n) == "null")) {%>
+                                                <div class="form-group form-check ml-4 mt-2 h5">
+                                                    <input class="form-check-input mt-1" style="height: 17px; width: 17px;" type="radio" name="answer<%=i%>" id="answer-<%=i%>-<%=n%>" value="<%=n%>" > 
+                                                    <label class="form-check-label ml-2" for="answer-<%=i%>-<%=n%>">
+                                                        <%= question.getAnswer(n)%>
+                                                    </label>
+                                                </div>
+                                            <%}%>
                                         <%}%>
                                     <%}%>
                                 </div>
-                            </div> 
-                        <%i++;%>
+                            </div>                            
+                            <%i++;%>
                         <%}%>
+                        <!--Enviar Quiz-->
+                        <hr class="mb-4">
+                        <div class="text-right">
+                            <input type="hidden" name="errorMessage" value="<%=errorMessage%>"/>
+                            <input type="hidden" name="pontos" value="<%=pontos%>"/>
+                            <input type="hidden" name="categoriaGame" value="<%=request.getParameter("categoryEnumId")%>"/>
+                            <button class="col-md-2 mr-4 mb-4 btn btn-primary" type="submit" name="submitQuiz">Enviar</button>
+                        </div>
                     </form>
                 <%}%>
-            
-                <!--Enviar Quiz-->
-                <hr class="mb-4">
-                <div class="text-right">
-                  <button class="col-md-2 mr-4 mb-4 btn btn-primary" type="submit" name="submitQuiz">Enviar</button>
+            <%} else {%>
+                <%{
+                    if(request.getParameter("submitQuiz")!=null){
+                        for (int j=1; j<=10; j++) {
+                            if (request.getParameter("answer"+ j) == null) {
+                                errorMessage = "Favor preencher todos os campos!";
+                                pontos = 0;
+                                break;
+                            }
+                            pontos += Long.parseLong(request.getParameter("answer"+ j)) == 1 ? 10 : 0;
+                        }
+                    }
+                }%>
+                <div>
+                    <h5><%=pontos%>/100 PONTOS</h5>
+                    <h5><%=request.getParameter("categoriaGame")%></h5>
                 </div>
             <%}%>
         <%}%>

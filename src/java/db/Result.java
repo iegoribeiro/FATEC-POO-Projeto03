@@ -17,6 +17,9 @@ public class Result {
     private String userLogin;
     private long categoryEnumId;
     private String username;
+
+    public Result() {
+    }
     
     public Result(long result, String userLogin, long categoryEnumId) {
         this.result = result;
