@@ -1,29 +1,3 @@
-#tabelaPrice th, #tabelaPrice td, #tabelaPrice {
-  border: 1px solid black;
-  margin: auto;
-}
-
-#tabelaPrice {
-  width: 80%;
-}
-
-#tabelaPrice th {
-  text-align: center;
-}
-
-#tabelaPrice #indice {
-  width: 40px;
-  text-align: center;
-}
-
-#trTotais {
-  font-weight: bold;
-}
-
-#imgPrice {
-  border:1px solid black;
-}
-
 .alignCenter {
   text-align: center;
 }
@@ -40,25 +14,90 @@
 
 .img-relative {
     width: 150px;
-    height: 50px;
+    transition: 0.2s;
 }
 
-.btn-submit {
-  text-align: center;
-  border: 1px solid transparent;
-  padding: 7px;
-  margin: 0px 2px 8px 2px;
-  border-radius: 0.25rem;
+.footer {
+    padding: 10px 0 10px;
+    text-align: center;
 }
 
-.custom-style1 {
-    margin-bottom: 15px;
-    margin-top: 0px;
-    padding: 0px;
+#imagemStudy {
+    width: 30px;
+    margin-bottom: 5px;
 }
 
-.custom-style2 {
+.img-logo-sm {
+    width: 100px;
+    transition: 0.3s;
+}
+
+.img-quiz {
+    width: 300px;
+}
+
+.custom-style {
     padding: 9px 0px 0px 0px;
     margin-bottom: 5px;
     margin-top: 0px;
+}
+
+nav.navbar {
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 90px;
+    transition: 0.2s;
+}
+
+nav.navbar.scroll-down {
+    /*opacity: 0.8;*/
+    height: 50px;
+    padding-top: 3px;
+    transition: 0.3s;
+}
+
+body {
+    margin-top: 138px !important;
+}
+
+/*#buttonMenu {
+    padding-bottom: 4px;
+    padding-top: 4px;
+    margin-top: 3px;
+}*/
+
+/*Efeito menu*/
+#efeitoMenu a {
+    margin-right: 10px; 
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
+}
+
+div.borderXwidth a:before, div.borderXwidth a:after {
+    position: absolute;
+    opacity: 0;
+    width: 0%;
+    height: 2px;
+    content: '';
+    background: #000;
+    transition: all 0.3s;
+}
+
+div.borderXwidth a:before {
+    left: 0px;
+    top: 0px;
+}
+
+div.borderXwidth a:after {
+    right: 0px;
+    bottom: 0px;
+}
+
+div.borderXwidth a:hover:before, div.borderXwidth a:hover:after {
+    opacity: 1;
+    width: 100%;
 }

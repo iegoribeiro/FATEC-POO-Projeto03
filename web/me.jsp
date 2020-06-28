@@ -35,27 +35,86 @@
     </head>
     <body>
         <%@include file="WEB-INF/jspf/menu.jspf" %>
-        <h2>Meu perfil</h2>
         <%if(session.getAttribute("user.login")==null){%>
-            <p>É preciso estar autenticado para acessar o conteúdo desta página.</p>
+            <div class="container">
+                <div class="row ml-0 mr-0">
+                    <div class="h4">É preciso estar autenticado para acessar o conteúdo desta página.</div>
+                </div>
+            </div>
         <%}else{%>
             <%if(requestException != null){%>
-                <div style="color:red"><%= requestException.getMessage() %></div>
+                <div class="container">
+                    <div class="row ml-0 mr-0">
+                        <div class="h5">Ah, Não! Ocorreu um erro, contate o administrador do sistema.
+                            <div style="color:red"><%= requestException.getMessage() %></div>
+                        </div>
+                    </div>
+                </div>
             <%}%>
-            <h3>Login:</h3>
-            <h4><%= session.getAttribute("user.login") %></h4>
-            <h3>Nome</h3>
-            <h4><%= session.getAttribute("user.name") %></h4>
-            <h3>Role:</h3>
-            <h4><%= session.getAttribute("user.role") %></h4>
-            <h3>Redefinição de senha:</h3>
-            <form method="post">
-                <input type="hidden" name="login" value="<%= session.getAttribute("user.login") %>"/>
-                Senha atual: <br/><input type="password" name="password"/><br/>
-                Senha nova: <br/><input type="password" name="new_password"/><br/>
-                Confirmação da senha nova: <br/><input type="password" name="new_password2"/><br/>
-                <br/><input type="submit" name="changePassword" value="Redefinir"/>
-            </form>
+            
+            
+            
+            <div class="container">
+                <div class="block-header mb-4">
+                    <h2 class="font-weight-bold">Meu perfil</h2>
+                </div>
+                
+                <div class="card mb-4 shadow" style="max-width: 18rem;">
+                    <div class="card-header h5"><%= session.getAttribute("user.name") %></div>
+                    <div>
+                        <img class="card-img-top" src="<%= request.getContextPath() %>/images/<%= session.getAttribute("user.role")%>.png" alt="admin">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>LOGIN: </strong><%= session.getAttribute("user.login")%></li>
+                            <li class="list-group-item"><strong>ROLE: </strong><%= session.getAttribute("user.role") %></li>
+                        </ul>
+                    </div>
+                </div>              
+            
+                <div class="shadow rounded mb-5">
+                    <form method="post" class="form-group mb-4">
+                        <div class="card">
+                            <div class="card-header ">
+                                <h4>Redefinição de senha</h4>
+                            </div>
+                            <input type="hidden" name="login" value="<%= session.getAttribute("user.login") %>"/>
+                            
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group fg-float">
+                                            <label class="fg-label" for="password">Senha atual</label>
+                                            <input class="form-control fg-input" type="password" name="password" id="login" placeholder="Senha atual"/>                                                
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group fg-float">
+                                            <label class="fg-label" for="password">Senha nova</label>
+                                            <input class="form-control fg-input" type="password" name="new_password" id="login" placeholder="Senha nova"/>                                                
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group fg-float">
+                                            <label class="fg-label" for="senha">Confirmação da senha nova</label>
+                                            <input class="form-control fg-input" type="password" name="new_password2" id="senha" placeholder="Confirmação da senha nova"/>                                                
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="text-right">
+                                            <button class="btn btn-outline-primary" type="submit" name="changePassword">Redefinir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         <%}%>
+        
+        <footer>
+          <%@include file="/WEB-INF/jspf/rodape.jspf" %>
+        </footer>
     </body>
 </html>

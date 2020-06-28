@@ -1,6 +1,4 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<hr/>
-<footer>
-    Todos os direitos reservados ©POO.Ltda | <a href="https://https://github.com/iegoribeiro/FATEC-POO-Projeto03" target="_blank" >Projeto no GitHub</a>
-</footer>
+    <hr/>
+    Todos os direitos reservados ©POO.Ltda | <a href="https://github.com/iegoribeiro/FATEC-POO-Projeto03" target="_blank" ><img id="imagemStudy" alt="imagem estudo" src="<%= request.getContextPath() %>/images/study.png">Projeto no GitHub</a>

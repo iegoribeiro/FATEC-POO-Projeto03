@@ -88,7 +88,7 @@ public class Result {
         if (category != 0) {
             SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?,?)";
         } else {
-            SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?)";
+            SQL = "INSERT INTO results(result, fk_user_login) VALUES(?,?)";
         }
         PreparedStatement stmt = con.prepareStatement(SQL);
         stmt.setLong(1, result);
@@ -184,6 +184,24 @@ public class Result {
         PreparedStatement stmt;
         stmt = con.prepareStatement("SELECT avg(r.result) as average FROM results r INNER JOIN users u ON (r.fk_user_login = u.login) WHERE u.login = ?");
         stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            media = rs.getFloat("average");
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return media;
+    }
+    
+    public static float getMediaByUserAndCategory(String login, long category) throws Exception{
+        float media = 0;
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        PreparedStatement stmt;
+        stmt = con.prepareStatement("SELECT avg(r.result) as average FROM results r INNER JOIN users u ON (r.fk_user_login = u.login) WHERE u.login = ? AND r.fk_category_enum = ?");
+        stmt.setString(1, login);
+        stmt.setLong(2, category);
         ResultSet rs = stmt.executeQuery();
         if(rs.next()){
             media = rs.getFloat("average");

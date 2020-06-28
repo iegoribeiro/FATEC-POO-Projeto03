@@ -80,9 +80,11 @@ public class DbListener implements ServletContextListener {
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual a altura da rede de vôlei nos jogos masculino e feminino?', '2,43 m e 2,24 m', '2,45 m e 2,15 m', '1,8 m e 1,5 m', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Em que ordem surgiram os modelos atômicos?', 'Dalton, Thomson, Rutherford, Rutherford-Bohr.', 'Rutherford-Bohr, Rutherford, Thomson, Dalton', 'Dalton, Thomson, Rutherford-Bohr, Rutherford', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Em que período da pré-história o fogo foi descoberto?', 'Paleolítico', 'Idade Média', 'Neolítico', 3)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Pensei em um número e multipliquei-o por 3. Somei 15 ao resultado e obtive 51. Em que número pensei?', '2', '5', '6', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual a montanha mais alta do Brasil?', 'Pico da Neblina', 'Monte Roraima', 'Monte Everest', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual a velocidade da luz?', 'Aproximadamente 300.000.000 (m/s)', 'Aproximadamente 150.000.000 (m/s)', 'Aproximadamente 30.000.000 (m/s)', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('“Twenty past six”. Que horas são em inglês?', '6:20', '12:06', '12:54', 3)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Quantos vezes o palmeiras já caiu para a serie B?', '2', '0', '1, Conta?', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Quem é o autor de “O Príncipe”?', 'Maquiavel', 'Antoine de Saint-Exupéry', 'Rousseau', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Quantos graus são necessário para que dois ângulos sejam complementares?', '90', '45', '180', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Se uma casa tem quatro lados e em cada canto tem um gato e cada gato vê três gatos, quantos gatos há na casa?', '4', '6', '3', 2)");
@@ -98,10 +100,11 @@ public class DbListener implements ServletContextListener {
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o maior animal terrestre?', 'Elefante africano', 'Nhonho', 'Girafa', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual o tema do famoso discurso Eu Tenho um Sonho, de Martin Luther King?', 'Igualdade das raças', 'Justiça para os menos favorecidos', 'Intolerância religiosa', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual é a fórmula mais famosa de Albert Einstein?', 'E=MC2', 'P=mg', 'F=ma', 2)");
-                stmt.executeUpdate("INSERT INTO questions VALUES ('Quantos mundiais tem o palmeiras?', 'Nenhum', '15', '75', 1)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Quantos mundiais tem o palmeiras?', 'Nenhum', '-2', 'Sub-20, Conta?', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual é o maior planeta do sistema solar?', 'Júpiter', 'Marte', 'Sol', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Os ornitorrincos são mamíferos: verdadeiro ou falso?', 'Verdade', 'Falso', NULL, 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Que líder mundial ficou conhecida como “Dama de Ferro”?', 'Margaret Thatcher', 'Dilma Rousseff', 'Hillary Clinton', 3)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Quantas casas decimais tem o número pi?', 'Infinitas', 'Duas', 'Milhares', 2)");
             }
             
             step = "'results' table creation";

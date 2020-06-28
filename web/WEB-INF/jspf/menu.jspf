@@ -8,7 +8,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Índice</title>
-        <link rel="shortcut icon" href="">
+        <link rel="shortcut icon" href="<%= request.getContextPath() %>/images/study.png">
         
         <link href="<%= request.getContextPath() %>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="<%= request.getContextPath() %>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,8 +19,23 @@
         <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+        <script>
+            $(window).scroll(function() {
+                var topBar = $("nav.navbar");
+                var imgLogo = $("#img-logo");
+                var errorLogin = $("#loginErrorId").length;
+                if($(this).scrollTop() < 50 || errorLogin > 0) {
+                    topBar.removeClass("scroll-down");
+                    imgLogo.removeClass("img-logo-sm");
+                } else {
+                    topBar.addClass("scroll-down");
+                    imgLogo.addClass("img-logo-sm");
+                }
+            });
+        </script>
     </head>
-        <%
+        <% 
             String loginError = null;
             if(request.getParameter("session.login")!=null){
                 String login = request.getParameter("user.login");
@@ -42,60 +57,65 @@
                 session.removeAttribute("user.login");
                 session.removeAttribute("user.name");
                 session.removeAttribute("user.role");
-                response.sendRedirect(request.getRequestURI());
+                response.sendRedirect(request.getContextPath()+"/index.jsp");
+//                request.getRequestURI()
             }
         %>
-
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light custom-style1 shadow mb-5">
-        <div class="container custom-style2">
-            <a class="navbar-brand" href="<%= request.getContextPath() %>/index.jsp"><img src="<%= request.getContextPath() %>/bannerFatec.png" class="img-relative"></a>
-            <div>
-                <%if(session.getAttribute("user.login")==null){%>
-                    <form class="form-inline" method="post">
-                        <div class="input-group mr-2 mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">@</span>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
+            <div class="container custom-style">
+                <a class="navbar-brand" href="<%= request.getContextPath() %>/index.jsp"><img src="<%= request.getContextPath() %>/images/quizPOO.png" id="img-logo" class="img-relative"></a>
+                <div>
+                    <%if(session.getAttribute("user.login")==null){%>
+                        <form class="form-inline" method="post">
+                            <div class="input-group mr-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@</span>
+                                </div>
+                                <input type="text" class="form-control" name="user.login" placeholder="login">
                             </div>
-                            <input type="text" class="form-control" name="user.login" placeholder="login">
-                        </div>
-                        <div class="input-group mr-2 mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">#</span>
+                            <div class="input-group mr-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">#</span>
+                                </div>
+                                <input type="password" class="form-control" name="user.password" placeholder="Password">
                             </div>
-                            <input type="password" class="form-control" name="user.password" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-secondary btn-submit" value="LogIn" name="session.login">Submit</button>
-                    </form>
-                    <%if(loginError != null){%>
-                      <div style="color:red"><%= loginError %></div>
+                            <button type="submit" class="btn btn-outline-primary" value="LogIn" name="session.login">LOGIN</button>
+                        </form>
+                        <%if(loginError != null){%>
+                          <div id="loginErrorId" style="color:red"><%= loginError %></div>
+                        <%}%>
+                    <%}else{%>
+                        <form> 
+                            <div id="efeitoMenu" class="borderXwidth">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link pr-2" href="<%= request.getContextPath() %>/index.jsp">Início</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link pr-2" href="<%= request.getContextPath() %>/quiz.jsp">Quiz</a>
+                                    </li>
+                                    <%if(session.getAttribute("user.role").equals("ADMIN")){%>
+                                        <li class="nav-item">
+                                            <a class="nav-link pr-2" href="<%= request.getContextPath() %>/restricted/users.jsp">Usuários</a>
+                                        </li>
+                                    <%}%>
+                                    <li class="nav-item">
+                                        <a class="nav-link pr-2" href="<%= request.getContextPath() %>/me.jsp"><b><%= session.getAttribute("user.name") %></a></b>
+                                    </li>
+                                    <li class="nav-item">
+                                        <input type="submit" class="btn btn-outline-danger ml-2" value="logout" id="buttonMenu" name="session.logoff"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
                     <%}%>
-                <%}else{%>
-                    <form>
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a class="nav-link pr-2" href="<%= request.getContextPath() %>/index.jsp">Início&nbsp;&nbsp;&nbsp;|</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link pr-2" href="<%= request.getContextPath() %>/quiz.jsp">Quiz&nbsp;&nbsp;&nbsp;|</a>
-                            </li>
-                            <%if(session.getAttribute("user.role").equals("ADMIN")){%>
-                                <li class="nav-item">
-                                    <a class="nav-link pr-2" href="<%= request.getContextPath() %>/restricted/users.jsp">Usuários&nbsp;&nbsp;&nbsp;|</a>
-                                </li>
-                            <%}%>
-                            <li class="nav-item">
-                                <a class="nav-link pr-2" href="<%= request.getContextPath() %>/me.jsp"><b><%= session.getAttribute("user.name") %>&nbsp;&nbsp;</a></b>
-                            </li>
-                            <input type="submit" class="btn btn-secondary btn-submit" value="sair" name="session.logoff"/>
-                        </ul>
-                    </form>
-                <%}%>
 
-                <%if(DbListener.exceptionMessage != null){%>
-                <div style="color:red"><%= DbListener.exceptionMessage %></div>
-                <%}%>
+                    <%if(DbListener.exceptionMessage != null){%>
+                    <div style="color:red"><%= DbListener.exceptionMessage %></div>
+                    <%}%>
+                <div>
             <div>
-        <div>
-    </nav>
+        </nav>
+    </body>
 </html>
