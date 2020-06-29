@@ -16,21 +16,26 @@
         <link href="<%= request.getContextPath() %>/css/style.css" rel="stylesheet">
         <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="<%= request.getContextPath() %>/css/bootstrap.min.css" />
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />-->
+        <script src="<%= request.getContextPath() %>/jquery-3.2.1.min.js"></script>
+        <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
     
         <script>
             $(window).scroll(function() {
                 var topBar = $("nav.navbar");
                 var imgLogo = $("#img-logo");
+                var progresso = $("#progresso-quiz");
                 var errorLogin = $("#loginErrorId").length;
                 if($(this).scrollTop() < 50 || errorLogin > 0) {
                     topBar.removeClass("scroll-down");
                     imgLogo.removeClass("img-logo-sm");
+                    progresso.removeClass("progresso-quiz-scroll");
                 } else {
                     topBar.addClass("scroll-down");
                     imgLogo.addClass("img-logo-sm");
+                    progresso.addClass("progresso-quiz-scroll");
                 }
             });
         </script>
@@ -53,6 +58,8 @@
                 }catch(Exception ex){
                     loginError = "Error: " + ex.getMessage();
                 }
+            }else if(request.getParameter("session.signup")!=null){
+                response.sendRedirect(request.getContextPath()+"/signup.jsp");
             }else if(request.getParameter("session.logoff")!=null){
                 session.removeAttribute("user.login");
                 session.removeAttribute("user.name");
@@ -80,7 +87,8 @@
                                 </div>
                                 <input type="password" class="form-control" name="user.password" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-outline-primary" value="LogIn" name="session.login">LOGIN</button>
+                            <button type="submit" class="btn btn-outline-primary mr-2" value="LogIn" name="session.login">SIGN IN</button>
+                            <button type="submit" class="btn btn-outline-success" value="SignIn" name="session.signup">SIGN UP</button>
                         </form>
                         <%if(loginError != null){%>
                           <div id="loginErrorId" style="color:red"><%= loginError %></div>
@@ -117,5 +125,12 @@
                 <div>
             <div>
         </nav>
+        <%if(request.getParameter("categoryEnumId") != null){%>
+            <div class="mb-5 progresso-quiz" id="progresso-quiz">
+                <div class="progress mb-3" style="height: 3px;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10" style="width: 0%"></div>
+                </div>
+            </div>
+        <%}%>
     </body>
 </html>

@@ -23,23 +23,26 @@
         
         <%if(session.getAttribute("user.login") == null){%>
             <header>
-                <div class="overlay">
-                    <div class="container">
-                        <div class="row">
-                            <div>
-                                  <div class="site-heading">
-                                      <h1>QUIZ</h1>
-                                      <span class="subheading">TP03 - Programação Orientada Objetos</span>
-                                  </div>
-                            </div>
+                <div class="container mb-3">
+                    <div class="row justify-content-center">
+                        <div class="site-heading text-center">
+                            <img src="<%= request.getContextPath() %>/images/quizPOO.png" id="img-logo" class="img-logo-index">
+                        </div>
+                    </div>
+                </div>
+                <div class="container mb-5">
+                    <div class="row justify-content-center">
+                        <div class="site-heading text-center">
+                            <a class="navbar-brand" href="https://github.com/iegoribeiro"><img src="<%= request.getContextPath() %>/images/iaribeiro.jpg" class="rounded-circle img-index-author"></a>
+                            <a class="navbar-brand" href="https://github.com/Vteodosio12"><img src="<%= request.getContextPath() %>/images/vteodosio.jpg" class="rounded-circle img-index-author"></a>
                         </div>
                     </div>
                 </div>
             </header>
             <div class="container">
-                <div class="row">
+                <div class="row mb-5">
                     <div class="col">
-                        <center><h3 class="mt-5 mb-5">Últimos quizzes realizados </h3></center>
+                        <center><h3 class="mb-5">Últimos quizzes realizados </h3></center>
                         <div class="shadow rounded">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover mb-0">
@@ -52,7 +55,7 @@
                                     <%for (Result result: Result.getTenLastQuizzes()) {%>
                                     <tr>
                                         <td scope="row" class="text-center"><%= i %></td>
-                                        <td scope="row"><%= result.getUsername() %></td>
+                                        <td scope="row" class="text-center"><%= result.getUsername() %></td>
                                         <td scope="row" class="text-center"><%= result.getResult() %></td>
                                     </tr>
                                     <%i++;%>
@@ -63,7 +66,7 @@
                     </div>
 
                     <div class="col">
-                    <center><h3 class="mt-5 mb-5">Ranking</h3></center>
+                    <center><h3 class="mb-5">Ranking</h3></center>
                     <div class="shadow rounded">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover mb-0">
@@ -104,8 +107,8 @@
                                         <div class="col-sm-12">
                                             <%DecimalFormat df = new DecimalFormat("0.0");%>
                                             <h6 class="mt-2 mb-2"><strong>Média geral: </strong><%= df.format(Result.getMediaByUser((String) session.getAttribute("user.login"))) %>/100 pontos</h6>
-                                            <h6 class="mt-2 mb-2"><strong>Pontuação máxima: </strong><%= df.format(Result.getMediaByUser((String) session.getAttribute("user.login"))) %> ponto(s)</h6>
-                                            <h6 class="mt-2 mb-2"><strong>Pontuação mínima: </strong><%= df.format(Result.getMediaByUser((String) session.getAttribute("user.login"))) %> ponto(s)</h6>
+                                            <h6 class="mt-2 mb-2"><strong>Pontuação máxima: </strong><%= Result.getMaxByUser((String) session.getAttribute("user.login")) %> ponto(s)</h6>
+                                            <h6 class="mt-2 mb-2"><strong>Pontuação mínima: </strong><%= Result.getMinByUser((String) session.getAttribute("user.login")) %> ponto(s)</h6>
                                         </div>
                                     </div>
                                 </div>

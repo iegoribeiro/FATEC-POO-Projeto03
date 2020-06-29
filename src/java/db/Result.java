@@ -194,6 +194,40 @@ public class Result {
         return media;
     }
     
+    public static int getMaxByUser(String login) throws Exception{
+        int max = 0;
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        PreparedStatement stmt;
+        stmt = con.prepareStatement("SELECT max(r.result) as max FROM results r where r.fk_user_login = ?");
+        stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            max = rs.getInt("max");
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return max;
+    }
+    
+    public static int getMinByUser(String login) throws Exception{
+        int min = 0;
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        PreparedStatement stmt;
+        stmt = con.prepareStatement("SELECT min(r.result) as min FROM results r where r.fk_user_login = ?");
+        stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            min = rs.getInt("min");
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return min;
+    }
+    
     public static float getMediaByUserAndCategory(String login, long category) throws Exception{
         float media = 0;
         Class.forName("org.sqlite.JDBC");

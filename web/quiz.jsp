@@ -24,7 +24,7 @@
                 if(request.getParameter("answer-"+ j) !=null) {
                     pontos += Long.parseLong(request.getParameter("answer-"+ j)) == 1 ? 10L : 0L;
                 }
-            }            
+            }
             
             System.out.println(userLogin + " | Pontos: " + pontos + " | Categoria: " + categoryEnumId);
             
@@ -54,6 +54,24 @@
                 return true;
             }
         </script>
+        <%if(request.getParameter("submitQuiz")==null){%>
+            <script>
+                var progressBar = $('.progress-bar');
+                var progressNumber = 0;
+                
+                setInterval(function(){
+                    progressNumber++;
+                    
+                    if(progressNumber === 110) {
+                        $('.alert').alert();
+                        //ao clicar em ok, redirecionar ao index.jsp
+                    }
+                    
+                    progressBar.css('width', progressNumber + '%');
+                    progressBar.attr('aria-valuenow', progressNumber);
+                }, 100);
+            </script>
+        <%}%>
         <%if(session.getAttribute("user.login")==null){%>
             <div class="container">
                 <div class="row">
@@ -90,8 +108,8 @@
                         </div>
                     </div>
 
-                    <%if(request.getParameter("categoryEnumId")!=null){%>                    
-                        <form method="POST" name="questionForm" onsubmit="return isValidForm()">
+                    <%if(request.getParameter("categoryEnumId")!=null){%>           
+                        <form method="post" name="questionForm" onsubmit="return isValidForm()">
                             <%int i = 1;%>
                             <%for (Question question : Question.getTenQuestionsRandomByCategory(Long.parseLong(request.getParameter("categoryEnumId")))) {%>
                                 <div class="container">
@@ -128,7 +146,7 @@
                             <!--Enviar Quiz-->
                             <div class="text-right">
                                 <input type="hidden" name="categoriaGame" value="<%=request.getParameter("categoryEnumId")%>"/>
-                                <button class="col-md-2 mr-4 mb-3 mt-3 btn btn-primary" type="submit" name="submitQuiz">Enviar</button>
+                                <button class="col-md-2 mr-4 mb-3 mt-3 btn btn-outline-primary" type="submit" name="submitQuiz">Enviar</button>
                             </div>    
                         </form>
                     <%}%>

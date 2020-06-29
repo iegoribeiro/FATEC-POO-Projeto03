@@ -36,6 +36,14 @@
     width: 300px;
 }
 
+.img-logo-index {
+    width: 500px;
+}
+
+.img-index-author {
+    width: 120px;
+}
+
 .custom-style {
     padding: 9px 0px 0px 0px;
     margin-bottom: 5px;
@@ -100,4 +108,16 @@ div.borderXwidth a:after {
 div.borderXwidth a:hover:before, div.borderXwidth a:hover:after {
     opacity: 1;
     width: 100%;
+}
+
+.progresso-quiz {
+    margin-top: -48px;
+}
+
+.progresso-quiz.progresso-quiz-scroll {
+    margin-top: -88px;
+    position: fixed;
+    height: 0px;
+    left: 0px;
+    right: 0px;
 }

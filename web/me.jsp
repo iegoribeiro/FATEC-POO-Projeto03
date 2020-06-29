@@ -30,11 +30,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="<%= request.getContextPath() %>/css/clean-blog.css" rel="stylesheet">
         <title>Meu Perfil - QUIZ</title>
     </head>
     <body>
-        <%@include file="WEB-INF/jspf/menu.jspf" %>
+        <%@include file="/WEB-INF/jspf/menu.jspf" %>
         <%if(session.getAttribute("user.login")==null){%>
             <div class="container">
                 <div class="row ml-0 mr-0">
@@ -51,8 +50,6 @@
                     </div>
                 </div>
             <%}%>
-            
-            
             
             <div class="container">
                 <div class="block-header mb-4">
