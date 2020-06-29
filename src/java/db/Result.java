@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package db;
 
 import java.sql.Connection;
@@ -9,42 +14,29 @@ import java.util.ArrayList;
 
 /**
  *
- * @author iego_
+ * @author rlarg
  */
 public class Result {
     private long rowId;
     private long result;
-    private User user;
-    private CategoryEnum category;
-
-    public Result(long rowId, long result, User user, CategoryEnum category) {
-        this.rowId = rowId;
-        this.result = result;
-        this.user = user;
-        this.category = category;
-    }
+    private String fk_user_login;
+    private long fk_category_enum;
     
-    public Result(long rowId, long result, String userLogin, long categoryEnumId) throws Exception {
-        this.rowId = rowId;
-        this.result = result;
-        this.user.setLogin(userLogin);
-        this.category.setId(categoryEnumId);
-//        this.category.setName(CategoryEnum.getCategoryEnum(categoryEnumId).getName());
-    }
-    
-    public static ArrayList<Result> getList() throws Exception{
+    public static ArrayList<Result> getList()throws Exception{
         ArrayList<Result> list = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT rowid, * from results");
+        ResultSet rs = stmt.executeQuery("SELECT ROW_NUMBER () OVER (ORDER BY results.result desc) rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login left join category_enum on results.fk_category_enum = category_enum.id order by results.result desc LIMIT 10 ");
         while(rs.next()){
-            list.add(new Result(
-                rs.getLong("rowid"),
-                rs.getLong("result"),
-                rs.getString("fk_user_login"),
-                rs.getLong("fk_category_enum")
-            ));
+            list.add(
+                    new Result(
+                            rs.getLong("rowid"), 
+                            rs.getLong("result"), 
+                            rs.getString("fk_user_login"),
+                            rs.getLong("fk_category_enum")
+                    )
+            );
         }
         rs.close();
         stmt.close();
@@ -52,80 +44,122 @@ public class Result {
         return list;
     }
     
-    public static Result getResult(long id)throws Exception{
-        Result transaction = null;
+    public static ArrayList<Result> getLast()throws Exception{
+        ArrayList<Result> list3 = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
-        String SQL = "SELECT rowid, * from results WHERE id=?";
-        PreparedStatement stmt = con.prepareStatement(SQL);
-        stmt.setLong(1, id);
-        ResultSet rs = stmt.executeQuery();
-        if(rs.next()){
-            transaction = new Result(
-                rs.getLong("rowid"),
-                rs.getLong("result"),
-                rs.getString("fk_user_login"),
-                rs.getLong("fk_category_enum")
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT ROW_NUMBER () OVER (ORDER BY results.rowid desc) rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login left join category_enum on results.fk_category_enum = category_enum.id order by results.rowid desc LIMIT 10 ");
+        while(rs.next()){
+            list3.add(
+                    new Result(
+                            rs.getLong("rowid"), 
+                            rs.getLong("result"), 
+                            rs.getString("fk_user_login"),
+                            rs.getLong("fk_category_enum")
+                    )
             );
         }
         rs.close();
         stmt.close();
         con.close();
-        return transaction;
+        return list3;
     }
     
-    public static void addResult(long result, User user, CategoryEnum category) throws Exception{
+    public static ArrayList<Result> getResult(String login)throws Exception{
+        ArrayList<Result> list2 = new ArrayList<>();
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
-        String SQL;
-        if (category != null) {
-            SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?,?)";
-        } else {
-            SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?)";
+        String SQL = "SELECT ROW_NUMBER () OVER (ORDER BY results.result desc) rowid, results.result as result, users.name as fk_user_login, category_enum.name as fk_category_enum from results inner join users on results.fk_user_login = users.login left join category_enum on results.fk_category_enum = category_enum.id WHERE results.fk_user_login=? order by results.result desc LIMIT 10 ";
+        PreparedStatement stmt = con.prepareStatement(SQL);
+        stmt.setString(1, login);
+        ResultSet rs = stmt.executeQuery();
+        
+        while(rs.next()){
+            list2.add(
+                    new Result(
+                            rs.getLong("rowid"), 
+                            rs.getLong("result"), 
+                            rs.getString("fk_user_login"),
+                            rs.getLong("fk_category_enum")
+                    )
+            );
         }
+        rs.close();
+        stmt.close();
+        con.close();
+        return list2;
+    }
+    
+    public static void addResult(Long result, String fk_user_login, Long fk_category_enum) throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        Connection con = DriverManager.getConnection(web.DbListener.URL);
+        String SQL = "INSERT INTO results(result, fk_user_login, fk_category_enum) VALUES(?,?,?)";
         PreparedStatement stmt = con.prepareStatement(SQL);
         stmt.setLong(1, result);
-        stmt.setString(2, user.getLogin());
-        if (category != null) {
-            stmt.setLong(3, category.getId());
-        }
+        stmt.setString(2, fk_user_login);
+        stmt.setLong(3, fk_category_enum);
         stmt.execute();
         stmt.close();
         con.close();
     }
-    
-    public static void putResult(long result, User user, CategoryEnum category, long rowId) throws Exception{
+    public static void putResult(long rowId, Long result, String fk_user_login, Long fk_category_enum) throws Exception{
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
-        String SQL;
-        if (category != null) {
-            SQL = "UPDATE results SET result=?, fk_user_login=?, fk_category_enum=?  WHERE id=?";
-        } else {
-            SQL = "UPDATE results SET result=?, fk_user_login=? WHERE id=?";
-        }
+        String SQL = "UPDATE results "
+                + "SET result=?, "
+                + "fk_user_login=?, "
+                + "fk_category_enum=? "
+                + "WHERE rowid=?";
         PreparedStatement stmt = con.prepareStatement(SQL);
         stmt.setLong(1, result);
-        stmt.setString(2, user.getLogin());
-        if (category != null) {
-            stmt.setLong(3, category.getId());
-            stmt.setLong(4, rowId);
-        } else {
-            stmt.setLong(3, rowId);
-        }
+        stmt.setString(2, fk_user_login);
+        stmt.setLong(3, fk_category_enum);
+        stmt.setLong(4, rowId);
         stmt.execute();
         stmt.close();
         con.close();
     }
-    
-    public static void removeResult(long id) throws Exception{
+    public static void removeResult(long rowId) throws Exception{
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(web.DbListener.URL);
-        String SQL = "DELETE FROM results WHERE id=?";
+        String SQL = "DELETE FROM result WHERE rowid=?";
         PreparedStatement stmt = con.prepareStatement(SQL);
-        stmt.setLong(1, id);
+        stmt.setLong(1, rowId);
         stmt.execute();
         stmt.close();
         con.close();
+    }
+
+    public Result(long rowId, Long result, String fk_user_login, Long fk_category_enum) {
+        this.rowId = rowId;
+        this.result = result;
+        this.fk_user_login = fk_user_login;
+        this.fk_category_enum = fk_category_enum;
+    }
+
+    public Long getResult() {
+        return result;
+    }
+
+    public void setResult(Long result) {
+        this.result = result;
+    }
+
+    public String getFk_user_login() {
+        return fk_user_login;
+    }
+
+    public void setFk_user_login(String fk_user_login) {
+        this.fk_user_login = fk_user_login;
+    }
+
+    public Long getFk_category_enum() {
+        return fk_category_enum;
+    }
+
+    public void setFk_category_enum(Long fk_category_enum) {
+        this.fk_category_enum = fk_category_enum;
     }
 
     public long getRowId() {
@@ -135,28 +169,5 @@ public class Result {
     public void setRowId(long rowId) {
         this.rowId = rowId;
     }
-
-    public long getResult() {
-        return result;
-    }
-
-    public void setResult(long result) {
-        this.result = result;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public CategoryEnum getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryEnum category) {
-        this.category = category;
-    }
+    
 }

@@ -12,29 +12,29 @@ import javax.servlet.ServletContextListener;
 
 public class DbListener implements ServletContextListener {
 
-    public static final String URL = "jdbc:sqlite:C:\\Users\\iego_\\OneDrive\\ADS\\4º Semestre\\POO\\Projeto3_Quiz\\SQLite\\quiz.db";    
+    public static final String URL = "jdbc:sqlite:C:\\Users\\notebook-user\\Documents\\GitHub\\FATEC-POO-Projeto03\\SQLite\\quiz.db";    
     public static String exceptionMessage = null;
         
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         String step = "Starting database";
         try {
-            Class.forName("org.sqlite.JDBC");
-            Connection con = DriverManager.getConnection(URL);
-            Statement stmt = con.createStatement();
+            if(User.getList().isEmpty()){
+                Class.forName("org.sqlite.JDBC");
+                Connection con = DriverManager.getConnection(URL);
+                Statement stmt = con.createStatement();
             
-            step = "alter default setting for foreign key";
-            stmt.executeUpdate("PRAGMA foreign_keys = ON");
+                step = "alter default setting for foreign key";
+                stmt.executeUpdate("PRAGMA foreign_keys = ON");
             
-            step = "'users' table creation";
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users("
+                step = "'users' table creation";
+                stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users("
                     + "name VARCHAR(200) NOT NULL,"
                     + "login VARCHAR(20) PRIMARY KEY,"
                     + "password_hash LONG NOT NULL,"
                     + "role VARCHAR(20) NOT NULL"
                     + ")");
                                     
-            if(User.getList().isEmpty()){
                 step = "Default user creation";
                 stmt.executeUpdate("INSERT INTO users VALUES ("
                     + "'Administrador', 'admin', "+"123456".hashCode()+",'ADMIN')");
@@ -42,7 +42,6 @@ public class DbListener implements ServletContextListener {
                     + "'Fulano da Silva', 'fulano', "+"1234".hashCode()+",'USER')");
                 stmt.executeUpdate("INSERT INTO users VALUES ("
                     + "'Beltrano Souza', 'beltrano', "+"123".hashCode()+",'USER')");
-            }
             
             step = "'category_enum' table creation";
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS category_enum("
@@ -117,11 +116,12 @@ public class DbListener implements ServletContextListener {
                 step = "Default results creation";
                 stmt.executeUpdate("INSERT INTO results VALUES ('70', 'admin', 2)");
                 stmt.executeUpdate("INSERT INTO results VALUES ('30', 'fulano', 1)");
-                stmt.executeUpdate("INSERT INTO results VALUES ('30', 'beltrano', NULL)");
+                stmt.executeUpdate("INSERT INTO results VALUES ('30', 'beltrano', 1)");
             }
            
             stmt.close();
             con.close();
+            }
         } catch (Exception ex) {
             exceptionMessage = step + ": " + ex.getMessage();
         }
