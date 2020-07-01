@@ -89,13 +89,13 @@
                                         <div class="col-sm-3 pr-1">
                                             <div class="form-group fg-float">
                                                 <label class="fg-label" for="login">Login</label>
-                                                <input class="form-control fg-input" type="text" name="login" id="login" placeholder="Login"/>                                                
+                                                <input class="form-control fg-input" type="text" name="login" required id="login" placeholder="Login"/>                                                
                                             </div>
                                         </div>
                                         <div class="col-sm-3 pr-1">
                                             <div class="form-group fg-float">
                                                 <label class="fg-label" for="name">Nome</label>
-                                                <input class="form-control fg-input" type="text" name="name" id="name" placeholder="Nome"/>                                                
+                                                <input class="form-control fg-input" type="text" name="name" required id="name" placeholder="Nome"/>                                                
                                             </div>
                                         </div>
                                         <div class="col-sm-3 pr-1">
@@ -103,14 +103,14 @@
                                                 <label class="fg-label" for="role">Role</label>
                                                 <select class="form-control form-control" name="role">
                                                     <option value="ADMIN">ADMIN</option>
-                                                    <option value="USER">USER</option>
+                                                    <option value="USER" selected>USER</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group fg-float">
                                                 <label class="fg-label" for="senha">Senha</label>
-                                                <input class="form-control fg-input" type="password" name="password" id="senha" placeholder="Senha"/>                                                
+                                                <input class="form-control fg-input" type="password" name="password" required id="senha" placeholder="Senha"/>                                                
                                             </div>
                                         </div>
                                     </div>

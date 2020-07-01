@@ -61,7 +61,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="form-group fg-float">
                                                         <label class="fg-label h6" for="login">Login</label>
-                                                        <input class="form-control fg-input" type="text" name="login" id="login" placeholder="Login"/>                                                
+                                                        <input class="form-control fg-input" type="text" name="login" id="login" required placeholder="Login"/>                                                
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,7 +69,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="form-group fg-float">
                                                         <label class="fg-label h6" for="name">Nome</label>
-                                                        <input class="form-control fg-input" type="text" name="name" id="name" placeholder="Nome"/>                                                
+                                                        <input class="form-control fg-input" type="text" name="name" id="name" required placeholder="Nome"/>                                                
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,7 +77,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="form-group fg-float">
                                                         <label class="fg-label h6" for="senha">Senha</label>
-                                                        <input class="form-control fg-input" type="password" name="password" id="senha" placeholder="Senha"/>                                                
+                                                        <input class="form-control fg-input" type="password" name="password" required id="senha" placeholder="Senha"/>                                                
                                                     </div>
                                                 </div>
                                             </div>

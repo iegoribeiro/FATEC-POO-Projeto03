@@ -121,3 +121,15 @@ div.borderXwidth a:hover:before, div.borderXwidth a:hover:after {
     left: 0px;
     right: 0px;
 }
+
+#div-progress-bar {
+    height: 10px;
+}
+
+#progress-bar-id {
+    width: 0%;
+}
+
+.progress-bar-class{
+  background-color: #007bff;
+}

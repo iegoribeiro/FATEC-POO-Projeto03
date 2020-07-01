@@ -15,6 +15,7 @@
 <%
     Exception requestException = null;
     long pontos = 0;
+    ArrayList<Integer> questionDrawn = new ArrayList<>();
     if(request.getParameter("submitQuiz")!=null){
         try{
             String userLogin = (String) session.getAttribute("user.login");
@@ -23,10 +24,9 @@
             for (int j=1; j<=10; j++) {
                 if(request.getParameter("answer-"+ j) !=null) {
                     pontos += Long.parseLong(request.getParameter("answer-"+ j)) == 1 ? 10L : 0L;
+                    questionDrawn.add(Integer.parseInt(request.getParameter("question-drawn-"+ j)));
                 }
             }
-            
-            System.out.println(userLogin + " | Pontos: " + pontos + " | Categoria: " + categoryEnumId);
             
             Result result = new Result();
             result.addResult(pontos, userLogin, categoryEnumId);
@@ -56,20 +56,34 @@
         </script>
         <%if(request.getParameter("submitQuiz")==null){%>
             <script>
-                var progressBar = $('.progress-bar');
+                var progressBar = $('.progress-bar-class');
                 var progressNumber = 0;
+                
+                function millisToMinutesAndSeconds(millis) {
+                    var minutes = Math.floor(millis / 60000);
+                    var seconds = ((millis % 60000) / 1000).toFixed(0);
+                    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+                }
                 
                 setInterval(function(){
                     progressNumber++;
                     
-                    if(progressNumber === 110) {
-                        $('.alert').alert();
-                        //ao clicar em ok, redirecionar ao index.jsp
+                    if(progressNumber === 12000 && document.getElementById("form-questions") !== null) {
+                        alert("Tempo esgotado, tente novamente!!");
+                        window.location.href = "<%= request.getContextPath() %>/quiz.jsp";
+                    }
+                    if(progressNumber < 12000 && document.getElementById("form-questions") !== null) {
+                        var x = (12000 - (progressNumber))/100;
+                        document.getElementById("tempo").innerHTML = millisToMinutesAndSeconds(x*1000);
+                        
+                        if(progressNumber > 9000) {
+                            progressBar.css('background-color', 'red');
+                        }
                     }
                     
-                    progressBar.css('width', progressNumber + '%');
+                    progressBar.css('width', ((progressNumber/100)/1.2) + '%');
                     progressBar.attr('aria-valuenow', progressNumber);
-                }, 100);
+                }, 10);
             </script>
         <%}%>
         <%if(session.getAttribute("user.login")==null){%>
@@ -94,7 +108,7 @@
                             <form method="post">
                                 <div class="d-flex">
                                     <h4>Escolha a categoria do Quiz:&nbsp;</h4>
-                                    <select class="ml-2" name="categoryEnumId">
+                                    <select class="ml-2" id="categoryEnum" name="categoryEnumId">
                                         <option value="0">Geral</option>
                                         <%for(CategoryEnum c: CategoryEnum.getList()){%>
                                             <option value="<%= c.getId()%>" <%= request.getParameter("categoryEnumId") != null && c.getId() == Long.parseLong(request.getParameter("categoryEnumId")) ? "selected" : "" %>>
@@ -102,14 +116,20 @@
                                             </option>
                                         <%}%>
                                     </select>
-                                    <input type="submit" class="btn btn-secondary ml-3 pb-0 pt-0" name="categoria" value="GAME!"/>
+                                    <input type="submit" class="btn btn-outline-primary ml-3 pb-0 pt-0" name="categoria" value="GAME!"/>
                                 </div>
                             </form>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-10"></div>
+                            <div class="col-sm-2">
+                                <h4>Tempo: <sapn id="tempo">2:00</sapn></h4>
+                            </div>
                         </div>
                     </div>
 
                     <%if(request.getParameter("categoryEnumId")!=null){%>           
-                        <form method="post" name="questionForm" onsubmit="return isValidForm()">
+                        <form method="post" id="form-questions" name="questionForm" onsubmit="return isValidForm()">
                             <%int i = 1;%>
                             <%for (Question question : Question.getTenQuestionsRandomByCategory(Long.parseLong(request.getParameter("categoryEnumId")))) {%>
                                 <div class="container">
@@ -118,6 +138,7 @@
                                         <hr class="mb-4">
                                         <div class="form-group mb-4">
                                             <p class="ml-4 mt-2 h4" id="question-<%=i%>"><%= question.getQuestion() %></p>
+                                            <input type="hidden" name="question-drawn-<%=i%>" value="<%=question.getRowId()%>"/>
                                         </div>
                                         <%
                                         Random random = new Random();
@@ -130,7 +151,7 @@
 
                                                 <% if (!(question.getAnswer(n) == null || question.getAnswer(n) == "null")) {%>
                                                     <div class="form-group form-check ml-4 mt-2 h5">
-                                                        <input class="form-check-input mt-1" style="height: 17px; width: 17px;" type="radio" name="answer-<%=i%>" id="answer-<%=i%>-<%=n%>" value="<%=n%>" > 
+                                                        <input class="form-check-input mt-1" style="height: 17px; width: 17px;" type="radio" name="answer-<%=i%>" id="answer-<%=i%>-<%=n%>" value="<%=n%>" >
                                                         <label class="form-check-label ml-2" for="answer-<%=i%>-<%=n%>">
                                                             <%= question.getAnswer(n)%>
                                                         </label>
@@ -156,24 +177,62 @@
                             <div class="row justify-content-center mb-3">
                                 <p class="font-weight-bold h3">RESULTADO: <%=pontos%>/100 pontos</P>
                             </div>
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center mb-5">
                                 <img class="img-thumbnail img-quiz" src="<%= request.getContextPath() %>/images/burro.jpg" alt="Você é burro!">                        
                             </div>
                         <%} else if (pontos < 70) {%>
                             <div class="row justify-content-center mb-3">
                                 <p class="font-weight-bold h3">RESULTADO: <%=pontos%>/100 pontos</P>
                             </div>
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center mb-5">
                                 <img class="img-thumbnail img-quiz" src="<%= request.getContextPath() %>/images/mediocre.png" alt="Mais ou menos!" >
                             </div>
                         <%} else {%>
                             <div class="row justify-content-center mb-3">
                                 <p class="font-weight-bold h3">RESULTADO: <%=pontos%>/100 pontos</P>
                             </div>
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center mb-5">
                                 <img class="img-thumbnail img-quiz" src="<%= request.getContextPath() %>/images/einstein.jpg" alt="Einstein!" >
                             </div>
                         <%}%>
+                        
+                        <div class="row justify-content-center mb-5">
+                            <button class="btn btn-outline-primary" type="submit" onclick="showAnswers('answersList')">Ver Respostas</button>
+                        </div>
+                        
+                        <script>
+                            function showAnswers(el) {
+                                var div = document.getElementById(el);
+                                var disp = div.style.display;
+                                div.style.display = disp == 'none' ? 'block' : 'none';
+                                document.getElementById("answersList").scrollIntoView({block:"nearest", behavior: 'smooth'});
+                            }
+                        </script>
+                        
+                        <div id="answersList" style="display:none" class="col-12">
+                            <div class="shadow rounded mb-5">
+                                <div class="card">
+                                    <div class="card-header ">
+                                        <h5 class="mt-2 mb-2"><strong>Respostas do Quiz</strong></h5>
+                                    </div>
+                                    <div class="card-body mt-3 ml-3 mr-3">
+                                        <ol>   
+                                            <%for (int rowId : questionDrawn) {
+                                                Question question = Question.getQuestionAndAnswers(rowId);
+                                            %>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-sm-12">
+                                                        <em><li class="h6"><%= question.getQuestion() %></li></em>
+                                                        <p class="mb-4 text-danger"><em><strong>R.</strong> <span class="text-secondary"><%= question.getAnswer1() %></span></em></p>
+                                                    </div>
+                                                </div>
+                                            <%}%>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                        
                     </div>
                 <%}%>
             <%}%>

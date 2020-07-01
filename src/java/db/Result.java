@@ -164,6 +164,7 @@ public class Result {
         ResultSet rs = stmt.executeQuery("SELECT u.name as username, r.result as result "
                                         + "FROM results r "
                                         + "INNER JOIN users u ON (r.fk_user_login = u.login)"
+                                        + "WHERE u.LOGIN <> 'admin'"
                                         + "ORDER BY r.result DESC LIMIT 10");
         while(rs.next()){
             list.add(new Result(

@@ -80,7 +80,7 @@ public class DbListener implements ServletContextListener {
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual a altura da rede de vôlei nos jogos masculino e feminino?', '2,43 m e 2,24 m', '2,45 m e 2,15 m', '1,8 m e 1,5 m', 1)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Em que ordem surgiram os modelos atômicos?', 'Dalton, Thomson, Rutherford, Rutherford-Bohr.', 'Rutherford-Bohr, Rutherford, Thomson, Dalton', 'Dalton, Thomson, Rutherford-Bohr, Rutherford', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Em que período da pré-história o fogo foi descoberto?', 'Paleolítico', 'Idade Média', 'Neolítico', 3)");
-                stmt.executeUpdate("INSERT INTO questions VALUES ('Pensei em um número e multipliquei-o por 3. Somei 15 ao resultado e obtive 51. Em que número pensei?', '2', '5', '6', 2)");
+                stmt.executeUpdate("INSERT INTO questions VALUES ('Pensei em um número e multipliquei-o por 3. Somei 15 ao resultado e obtive 51. Em que número pensei?', '12', '6', '8', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual a montanha mais alta do Brasil?', 'Pico da Neblina', 'Monte Roraima', 'Monte Everest', 3)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('Qual a velocidade da luz?', 'Aproximadamente 300.000.000 (m/s)', 'Aproximadamente 150.000.000 (m/s)', 'Aproximadamente 30.000.000 (m/s)', 2)");
                 stmt.executeUpdate("INSERT INTO questions VALUES ('“Twenty past six”. Que horas são em inglês?', '6:20', '12:06', '12:54', 3)");
