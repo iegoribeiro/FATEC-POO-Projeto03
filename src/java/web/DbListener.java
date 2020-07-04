@@ -23,6 +23,8 @@ public class DbListener implements ServletContextListener {
             Connection con = DriverManager.getConnection(URL);
             Statement stmt = con.createStatement();
             
+            stmt.executeUpdate("PRAGMA encoding = 'UTF-8'");
+            
             step = "'users' table creation";
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users("
                     + "name VARCHAR(200) NOT NULL,"

@@ -133,3 +133,7 @@ div.borderXwidth a:hover:before, div.borderXwidth a:hover:after {
 .progress-bar-class{
   background-color: #007bff;
 }
+
+.tachado {
+    text-decoration:line-through;
+}

@@ -16,6 +16,7 @@
     Exception requestException = null;
     long pontos = 0;
     ArrayList<Integer> questionDrawn = new ArrayList<>();
+    ArrayList<Integer> answered = new ArrayList<>();
     if(request.getParameter("submitQuiz")!=null){
         try{
             String userLogin = (String) session.getAttribute("user.login");
@@ -25,6 +26,7 @@
                 if(request.getParameter("answer-"+ j) !=null) {
                     pontos += Long.parseLong(request.getParameter("answer-"+ j)) == 1 ? 10L : 0L;
                     questionDrawn.add(Integer.parseInt(request.getParameter("question-drawn-"+ j)));
+                    answered.add(Integer.parseInt(request.getParameter("answer-"+ j)));
                 }
             }
             
@@ -204,7 +206,7 @@
                             function showAnswers(el) {
                                 var div = document.getElementById(el);
                                 var disp = div.style.display;
-                                div.style.display = disp == 'none' ? 'block' : 'none';
+                                div.style.display = disp === 'none' ? 'block' : 'none';
                                 document.getElementById("answersList").scrollIntoView({block:"nearest", behavior: 'smooth'});
                             }
                         </script>
@@ -216,16 +218,22 @@
                                         <h5 class="mt-2 mb-2"><strong>Respostas do Quiz</strong></h5>
                                     </div>
                                     <div class="card-body mt-3 ml-3 mr-3">
-                                        <ol>   
+                                        <ol>
+                                            <%int k=0;%>
                                             <%for (int rowId : questionDrawn) {
                                                 Question question = Question.getQuestionAndAnswers(rowId);
                                             %>
                                                 <div class="row justify-content-center">
                                                     <div class="col-sm-12">
                                                         <em><li class="h6"><%= question.getQuestion() %></li></em>
-                                                        <p class="mb-4 text-danger"><em><strong>R.</strong> <span class="text-secondary"><%= question.getAnswer1() %></span></em></p>
+                                                        <p class="mb-2"><em><strong><span class="text-success"><%= question.getAnswer1() %></span></strong></em></p>
+                                                        <p class="mb-2"><em><span class="<%=answered.get(k) == 2 ? "text-danger tachado" : "text-secondary"%>"><%= question.getAnswer2() %></span></em></p>
+                                                        <% if(question.getAnswer3() != null) { %>
+                                                            <p class="mb-4"><em><span class="<%=answered.get(k) == 3 ? "text-danger tachado" : "text-secondary"%>"><%= question.getAnswer3() %></span></em></p>
+                                                        <% } %>
                                                     </div>
                                                 </div>
+                                                <%k++;%>
                                             <%}%>
                                         </ol>
                                     </div>

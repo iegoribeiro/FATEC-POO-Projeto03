@@ -6,8 +6,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Índice</title>
         <link rel="shortcut icon" href="<%= request.getContextPath() %>/images/study.png">
         
         <link href="<%= request.getContextPath() %>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
